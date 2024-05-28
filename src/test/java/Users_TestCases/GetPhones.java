@@ -1,22 +1,13 @@
 package Users_TestCases;
 
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
-import lombok.Data;
-
-import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.given;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 public class GetPhones {
@@ -33,21 +24,22 @@ public class GetPhones {
         JsonPath jsonpath = res.jsonPath();
         String id = jsonpath.getString("id");
         System.out.println(id);
+
+        //Validate that id is not null.
         Assert.assertNotNull(id);
 
-//		String price=res.jsonPath().get("data[3].price").toString();
-//		System.out.println(price);
+        String price = res.jsonPath().get("data.price").toString();
+        System.out.println(price);
+
         JSONArray jsonArray = new JSONArray(res.asString());
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-//			
-//			String price1= jsonObject1.get("data").toString();
-//			System.out.println(price1);
 
             String value1 = jsonObject1.getString("name");
             String value2 = "Apple";
 
+            //get All Phones starting with value Apple.
             if (value1.contains(value2)) {
                 System.out.println(value1);
             }
